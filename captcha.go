@@ -98,3 +98,19 @@ func (c *Captcha) WriteJPG(w io.Writer, o *jpeg.Options) error {
 func (c *Captcha) WriteGIF(w io.Writer, o *gif.Options) error {
 	return gif.Encode(w, c.img, o)
 }
+
+// LoadFont lets load an external font.
+func LoadFont(fontData []byte) (err error) {
+	ttfFont, err = freetype.ParseFont(fontData)
+	return err
+}
+
+// LoadFontFromReader load an external font from an io.Reader interface.
+func LoadFontFromReader(reader io.Reader) error {
+	b, err := io.ReadAll(reader)
+	if err != nil {
+		return err
+	}
+
+	return LoadFont(b)
+}
