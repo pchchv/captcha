@@ -61,6 +61,9 @@ type Captcha struct {
 	img  *image.NRGBA
 }
 
+// SetOption is a function used to change the default settings.
+type SetOption func(*Options)
+
 func init() {
 	ttfFont, _ = freetype.ParseFont(ttf)
 	rand.Seed(time.Now().UnixNano())
