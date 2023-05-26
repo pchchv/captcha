@@ -114,3 +114,20 @@ func LoadFontFromReader(reader io.Reader) error {
 
 	return LoadFont(b)
 }
+
+func randomText(opts *Options) (text string) {
+	n := len([]rune(opts.CharPreset))
+	for i := 0; i < opts.TextLength; i++ {
+		text += string([]rune(opts.CharPreset)[rand.Intn(n)])
+	}
+
+	return
+}
+
+func randomColor() color.RGBA {
+	red := rand.Intn(256)
+	green := rand.Intn(256)
+	blue := rand.Intn(256)
+
+	return color.RGBA{R: uint8(red), G: uint8(green), B: uint8(blue), A: uint8(255)}
+}
