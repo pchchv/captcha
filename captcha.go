@@ -8,9 +8,19 @@ import (
 	"image/jpeg"
 	"image/png"
 	"io"
+	"math/rand"
+	"time"
+
+	"github.com/golang/freetype"
+	"github.com/golang/freetype/truetype"
 )
 
 const charPreset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+var (
+	ttf     []byte
+	ttfFont *truetype.Font
+)
 
 // Options manage captcha generation.
 type Options struct {
@@ -49,6 +59,11 @@ type Options struct {
 type Captcha struct {
 	Text string
 	img  *image.NRGBA
+}
+
+func init() {
+	ttfFont, _ = freetype.ParseFont(ttf)
+	rand.Seed(time.Now().UnixNano())
 }
 
 func newDefaultOption(width, height int) *Options {
