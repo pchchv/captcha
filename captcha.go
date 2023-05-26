@@ -15,6 +15,7 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font"
 )
 
 const charPreset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -233,4 +234,31 @@ func drawSineCurve(img *image.NRGBA, opts *Options) {
 		y := math.Sin(math.Pi*angle*float64(x1)/float64(opts.width)) * curveHeight * yFlip
 		img.Set(x1, int(y)+yStart, curveColor)
 	}
+}
+
+func drawText(text string, img *image.NRGBA, opts *Options) error {
+	ctx := freetype.NewContext()
+	ctx.SetDPI(opts.FontDPI)
+	ctx.SetClip(img.Bounds())
+	ctx.SetDst(img)
+	ctx.SetHinting(font.HintingFull)
+	ctx.SetFont(ttfFont)
+
+	fontSpacing := opts.width / len(text)
+	fontOffset := rand.Intn(fontSpacing / 2)
+
+	for idx, char := range text {
+		fontScale := 0.8 + rand.Float64()*0.4
+		fontSize := float64(opts.height) / fontScale * opts.FontScale
+		ctx.SetFontSize(fontSize)
+		ctx.SetSrc(image.NewUniform(randomColorFromOptions(opts)))
+		x := fontSpacing*idx + fontOffset
+		y := opts.height/6 + rand.Intn(opts.height/3) + int(fontSize/2)
+		pt := freetype.Pt(x, y)
+		if _, err := ctx.DrawString(string(char), pt); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
