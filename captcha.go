@@ -8,6 +8,7 @@ import (
 	"image/jpeg"
 	"image/png"
 	"io"
+	"math"
 	"math/rand"
 	"strconv"
 	"time"
@@ -201,4 +202,35 @@ func getLightness(colour color.Color) float64 {
 	min := minColor(r, g, b)
 
 	return (float64(max) + float64(min)) / (2 * 255)
+}
+
+func drawCurves(img *image.NRGBA, opts *Options) {
+	for i := 0; i < opts.CurveNumber; i++ {
+		drawSineCurve(img, opts)
+	}
+}
+
+func drawSineCurve(img *image.NRGBA, opts *Options) {
+	var xStart, xEnd int
+	if opts.width <= 40 {
+		xStart, xEnd = 1, opts.width-1
+	} else {
+		xStart = rand.Intn(opts.width/10) + 1
+		xEnd = opts.width - rand.Intn(opts.width/10) - 1
+	}
+
+	curveHeight := float64(rand.Intn(opts.height/6) + opts.height/6)
+	yStart := rand.Intn(opts.height*2/3) + opts.height/6
+	angle := 1.0 + rand.Float64()
+	yFlip := 1.0
+	if rand.Intn(2) == 0 {
+		yFlip = -1.0
+	}
+
+	curveColor := randomColorFromOptions(opts)
+
+	for x1 := xStart; x1 <= xEnd; x1++ {
+		y := math.Sin(math.Pi*angle*float64(x1)/float64(opts.width)) * curveHeight * yFlip
+		img.Set(x1, int(y)+yStart, curveColor)
+	}
 }
