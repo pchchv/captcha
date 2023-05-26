@@ -3,6 +3,8 @@ package captcha
 
 import "image/color"
 
+const charPreset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
 // Options manage captcha generation.
 type Options struct {
 	// BackgroundColor is captcha image's background color.
@@ -32,4 +34,19 @@ type Options struct {
 	Palette color.Palette
 	width   int
 	height  int
+}
+
+func newDefaultOption(width, height int) *Options {
+	return &Options{
+		BackgroundColor: color.Transparent,
+		CharPreset:      charPreset,
+		TextLength:      4,
+		CurveNumber:     2,
+		FontDPI:         72.0,
+		FontScale:       1.0,
+		Noise:           1.0,
+		Palette:         []color.Color{},
+		width:           width,
+		height:          height,
+	}
 }
