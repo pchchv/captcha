@@ -1,7 +1,10 @@
 // Package provides an simple, unopinionated API for captcha generation
 package captcha
 
-import "image/color"
+import (
+	"image"
+	"image/color"
+)
 
 const charPreset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -34,6 +37,14 @@ type Options struct {
 	Palette color.Palette
 	width   int
 	height  int
+}
+
+// Captcha is the result of captcha generation.
+// It has a `Text` field and a private `img` field,
+// which will be used in the `WriteImage` receiver.
+type Captcha struct {
+	Text string
+	img  *image.NRGBA
 }
 
 func newDefaultOption(width, height int) *Options {
