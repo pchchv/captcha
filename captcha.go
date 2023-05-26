@@ -4,6 +4,10 @@ package captcha
 import (
 	"image"
 	"image/color"
+	"image/gif"
+	"image/jpeg"
+	"image/png"
+	"io"
 )
 
 const charPreset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -60,4 +64,22 @@ func newDefaultOption(width, height int) *Options {
 		width:           width,
 		height:          height,
 	}
+}
+
+// WriteImage encodes image data and writes it to io.Writer.
+// Returns an error possible when encoding PNG.
+func (c *Captcha) WriteImage(w io.Writer) error {
+	return png.Encode(w, c.img)
+}
+
+// WriteJPG encodes the image data into JPEG format and writes it to io.Writer.
+// Returns an error possible when encoding JPEG.
+func (c *Captcha) WriteJPG(w io.Writer, o *jpeg.Options) error {
+	return jpeg.Encode(w, c.img, o)
+}
+
+// WriteGIF encodes the image data into GIF format and writes it to io.Writer.
+// Returns an error possible when encoding GIF.
+func (c *Captcha) WriteGIF(w io.Writer, o *gif.Options) error {
+	return gif.Encode(w, c.img, o)
 }
