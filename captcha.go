@@ -176,7 +176,7 @@ func maxColor(numList ...uint32) (max uint32) {
 		}
 	}
 
-	return max
+	return
 }
 
 func minColor(numList ...uint32) (min uint32) {
@@ -188,7 +188,7 @@ func minColor(numList ...uint32) (min uint32) {
 		}
 	}
 
-	return min
+	return
 }
 
 func getLightness(colour color.Color) float64 {
@@ -200,7 +200,5 @@ func getLightness(colour color.Color) float64 {
 	max := maxColor(r, g, b)
 	min := minColor(r, g, b)
 
-	l := (float64(max) + float64(min)) / (2 * 255)
-
-	return l
+	return (float64(max) + float64(min)) / (2 * 255)
 }
