@@ -88,6 +88,24 @@ func newDefaultOption(width, height int) *Options {
 	}
 }
 
+// New creates a new captcha.
+func New(width int, height int, option ...SetOption) (*Captcha, error) {
+	options := newDefaultOption(width, height)
+
+	for _, setOption := range option {
+		setOption(options)
+	}
+
+	text := randomText(options)
+	img := image.NewNRGBA(image.Rect(0, 0, width, height))
+
+	if err := drawWithOption(text, img, options); err != nil {
+		return nil, err
+	}
+
+	return &Captcha{Text: text, img: img}, nil
+}
+
 // WriteImage encodes image data and writes it to io.Writer.
 // Returns an error possible when encoding PNG.
 func (c *Captcha) WriteImage(w io.Writer) error {
