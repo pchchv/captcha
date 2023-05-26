@@ -157,3 +157,17 @@ func minColor(numList ...uint32) (min uint32) {
 
 	return min
 }
+
+func getLightness(colour color.Color) float64 {
+	r, g, b, a := colour.RGBA()
+	if a == 0 {
+		return 1.0
+	}
+
+	max := maxColor(r, g, b)
+	min := minColor(r, g, b)
+
+	l := (float64(max) + float64(min)) / (2 * 255)
+
+	return l
+}
