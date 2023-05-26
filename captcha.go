@@ -9,6 +9,7 @@ import (
 	"image/png"
 	"io"
 	"math/rand"
+	"strconv"
 	"time"
 
 	"github.com/golang/freetype"
@@ -133,6 +134,38 @@ func randomColor() color.RGBA {
 	blue := rand.Intn(256)
 
 	return color.RGBA{R: uint8(red), G: uint8(green), B: uint8(blue), A: uint8(255)}
+}
+
+func randomColorFromOptions(opts *Options) color.Color {
+	length := len(opts.Palette)
+	if length == 0 {
+		return randomInvertColor(opts.BackgroundColor)
+	}
+
+	return opts.Palette[rand.Intn(length)]
+}
+
+func randomEquation() (text string, equation string) {
+	left := 1 + rand.Intn(9)
+	right := 1 + rand.Intn(9)
+	text = strconv.Itoa(left + right)
+	equation = strconv.Itoa(left) + "+" + strconv.Itoa(right)
+
+	return
+}
+
+func randomInvertColor(base color.Color) color.Color {
+	var value float64
+	baseLightness := getLightness(base)
+	if baseLightness >= 0.5 {
+		value = baseLightness - 0.3 - rand.Float64()*0.2
+	} else {
+		value = baseLightness + 0.3 + rand.Float64()*0.2
+	}
+	hue := float64(rand.Intn(361)) / 360
+	saturation := 0.6 + rand.Float64()*0.2
+
+	return hsva{h: hue, s: saturation, v: value, a: 255}
 }
 
 func maxColor(numList ...uint32) (max uint32) {
