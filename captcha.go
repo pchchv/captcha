@@ -4,6 +4,7 @@ package captcha
 import (
 	"image"
 	"image/color"
+	"image/draw"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
@@ -205,6 +206,14 @@ func getLightness(colour color.Color) float64 {
 	return (float64(max) + float64(min)) / (2 * 255)
 }
 
+func drawWithOption(text string, img *image.NRGBA, options *Options) error {
+	draw.Draw(img, img.Bounds(), &image.Uniform{options.BackgroundColor}, image.Point{}, draw.Src)
+	drawNoise(img, options)
+	drawCurves(img, options)
+
+	return drawText(text, img, options)
+}
+
 func drawCurves(img *image.NRGBA, opts *Options) {
 	for i := 0; i < opts.CurveNumber; i++ {
 		drawSineCurve(img, opts)
@@ -261,4 +270,14 @@ func drawText(text string, img *image.NRGBA, opts *Options) error {
 	}
 
 	return nil
+}
+
+func drawNoise(img *image.NRGBA, opts *Options) {
+	noiseCount := (opts.width * opts.height) / int(28.0/opts.Noise)
+
+	for i := 0; i < noiseCount; i++ {
+		x := rand.Intn(opts.width)
+		y := rand.Intn(opts.height)
+		img.Set(x, y, randomColor())
+	}
 }
