@@ -134,3 +134,26 @@ func randomColor() color.RGBA {
 
 	return color.RGBA{R: uint8(red), G: uint8(green), B: uint8(blue), A: uint8(255)}
 }
+
+func maxColor(numList ...uint32) (max uint32) {
+	for _, num := range numList {
+		colorVal := num & 255
+		if colorVal > max {
+			max = colorVal
+		}
+	}
+
+	return max
+}
+
+func minColor(numList ...uint32) (min uint32) {
+	min = 255
+	for _, num := range numList {
+		colorVal := num & 255
+		if colorVal < min {
+			min = colorVal
+		}
+	}
+
+	return min
+}
