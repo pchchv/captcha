@@ -1,10 +1,17 @@
 package captcha
 
 import (
+	"errors"
 	"image/color"
 	"image/color/palette"
 	"testing"
 )
+
+type errReader struct{}
+
+func (errReader) Read(_ []byte) (int, error) {
+	return 0, errors.New("")
+}
 
 func TestNewCaptchaOptions(t *testing.T) {
 	New(100, 34, func(options *Options) {
@@ -48,4 +55,10 @@ func TestNilFontError(t *testing.T) {
 	}
 
 	ttfFont = temp
+}
+
+func TestReaderErr(t *testing.T) {
+	if err := LoadFontFromReader(errReader{}); err == nil {
+		t.Fatal("Expect to get io.Reader error")
+	}
 }
