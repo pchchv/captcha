@@ -25,3 +25,27 @@ func TestNewCaptchaOptions(t *testing.T) {
 		o.BackgroundColor = color.Black
 	})
 }
+
+func TestNilFontError(t *testing.T) {
+	temp := ttfFont
+	ttfFont = nil
+
+	_, err := New(150, 50)
+	if err == nil {
+		t.Fatal("Expect to get nil font error")
+	}
+
+	_, err = NewMathExpr(150, 50)
+	if err == nil {
+		t.Fatal("Expect to get nil font error")
+	}
+
+	_, err = NewCustomGenerator(150, 50, func() (anwser string, question string) {
+		return "1", "2"
+	})
+	if err == nil {
+		t.Fatal("Expect to get nil font error")
+	}
+
+	ttfFont = temp
+}
