@@ -106,6 +106,25 @@ func New(width int, height int, option ...SetOption) (*Captcha, error) {
 	return &Captcha{Text: text, img: img}, nil
 }
 
+// NewMathExpr creates a new captcha.
+// Generates an image with a mathematical expression like `1 + 2`.
+func NewMathExpr(width int, height int, option ...SetOption) (*Captcha, error) {
+	options := newDefaultOption(width, height)
+
+	for _, setOption := range option {
+		setOption(options)
+	}
+
+	text, equation := randomEquation()
+	img := image.NewNRGBA(image.Rect(0, 0, width, height))
+
+	if err := drawWithOption(equation, img, options); err != nil {
+		return nil, err
+	}
+
+	return &Captcha{Text: text, img: img}, nil
+}
+
 // WriteImage encodes image data and writes it to io.Writer.
 // Returns an error possible when encoding PNG.
 func (c *Captcha) WriteImage(w io.Writer) error {
