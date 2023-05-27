@@ -125,6 +125,24 @@ func NewMathExpr(width int, height int, option ...SetOption) (*Captcha, error) {
 	return &Captcha{Text: text, img: img}, nil
 }
 
+// NewCustomGenerator creates a new captcha based on a custom text generator.
+func NewCustomGenerator(width int, height int, generator func() (anwser string, question string), option ...SetOption) (*Captcha, error) {
+	options := newDefaultOption(width, height)
+
+	for _, setOption := range option {
+		setOption(options)
+	}
+
+	answer, question := generator()
+	img := image.NewNRGBA(image.Rect(0, 0, width, height))
+
+	if err := drawWithOption(question, img, options); err != nil {
+		return nil, err
+	}
+
+	return &Captcha{Text: answer, img: img}, nil
+}
+
 // WriteImage encodes image data and writes it to io.Writer.
 // Returns an error possible when encoding PNG.
 func (c *Captcha) WriteImage(w io.Writer) error {
