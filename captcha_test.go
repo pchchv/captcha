@@ -5,6 +5,8 @@ import (
 	"errors"
 	"image/color"
 	"image/color/palette"
+	"image/gif"
+	"image/jpeg"
 	"math/rand"
 	"os"
 	"testing"
@@ -158,6 +160,50 @@ func TestNewCaptcha(t *testing.T) {
 // freetype: DrawText called with a nil font
 func TestSmallCaptcha(t *testing.T) {
 	_, err := New(36, 12)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestEncodeJPG(t *testing.T) {
+	data, err := New(150, 50)
+	if err != nil {
+		t.Fatal(err)
+	}
+	buf := new(bytes.Buffer)
+	err = data.WriteJPG(buf, &jpeg.Options{Quality: 70})
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestEncodeGIF(t *testing.T) {
+	data, err := New(150, 50)
+	if err != nil {
+		t.Fatal(err)
+	}
+	buf := new(bytes.Buffer)
+	err = data.WriteGIF(buf, &gif.Options{})
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+// Need Fix!
+// freetype: DrawText called with a nil font
+func TestNewMathExpr(t *testing.T) {
+	_, err := NewMathExpr(150, 50)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+// Need Fix!
+// freetype: DrawText called with a nil font
+func TestNewCustomGenerator(t *testing.T) {
+	_, err := NewCustomGenerator(150, 50, func() (anwser string, question string) {
+		return "1", "2"
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
