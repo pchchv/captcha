@@ -1,6 +1,7 @@
 package captcha
 
 import (
+	"bytes"
 	"errors"
 	"image/color"
 	"image/color/palette"
@@ -135,5 +136,20 @@ func TestMaxColor(t *testing.T) {
 		if result > 255 {
 			t.Fatalf("Number out of range: %v", result)
 		}
+	}
+}
+
+// Need Fix!
+// freetype: DrawText called with a nil font
+func TestNewCaptcha(t *testing.T) {
+	data, err := New(150, 50)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	buf := new(bytes.Buffer)
+	err = data.WriteImage(buf)
+	if err != nil {
+		t.Fatal(err)
 	}
 }
