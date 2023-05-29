@@ -153,3 +153,12 @@ func TestNewCaptcha(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+// Need Fix!
+// freetype: DrawText called with a nil font
+func TestSmallCaptcha(t *testing.T) {
+	_, err := New(36, 12)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
