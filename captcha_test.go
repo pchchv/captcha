@@ -4,7 +4,10 @@ import (
 	"errors"
 	"image/color"
 	"image/color/palette"
+	"os"
 	"testing"
+
+	"golang.org/x/image/font/gofont/goregular"
 )
 
 type errReader struct{}
@@ -60,5 +63,26 @@ func TestNilFontError(t *testing.T) {
 func TestReaderErr(t *testing.T) {
 	if err := LoadFontFromReader(errReader{}); err == nil {
 		t.Fatal("Expect to get io.Reader error")
+	}
+}
+
+func TestLoadFont(t *testing.T) {
+	if err := LoadFont(goregular.TTF); err != nil {
+		t.Fatal("Fail to load go font")
+	}
+
+	if err := LoadFont([]byte("invalid")); err == nil {
+		t.Fatal("LoadFont incorrectly parse an invalid font")
+	}
+}
+
+func TestLoadFontFromReader(t *testing.T) {
+	file, err := os.Open("./fonts/Comismsh.ttf")
+	if err != nil {
+		t.Fatal("Fail to load test file")
+	}
+
+	if err = LoadFontFromReader(file); err != nil {
+		t.Fatal("Fail to load font from io.Reader")
 	}
 }
