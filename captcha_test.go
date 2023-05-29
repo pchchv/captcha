@@ -4,6 +4,7 @@ import (
 	"errors"
 	"image/color"
 	"image/color/palette"
+	"math/rand"
 	"os"
 	"testing"
 
@@ -84,5 +85,55 @@ func TestLoadFontFromReader(t *testing.T) {
 
 	if err = LoadFontFromReader(file); err != nil {
 		t.Fatal("Fail to load font from io.Reader")
+	}
+}
+
+func TestMinColor(t *testing.T) {
+	rng := rand.New(rand.NewSource(0))
+	result := minColor()
+	if result != 255 {
+		t.Fatalf("Expect min color to be 255, got %v", result)
+	}
+
+	result = minColor(1)
+	if result != 1 {
+		t.Fatalf("Expect min color to be 1, got %v", result)
+	}
+
+	result = minColor(52428, 65535)
+	if result != 204 {
+		t.Fatalf("Expect min color to be 1, got %v", result)
+	}
+
+	for i := 0; i < 10; i++ {
+		result = minColor(rng.Uint32(), rng.Uint32(), rng.Uint32())
+		if result > 255 {
+			t.Fatalf("Number out of range: %v", result)
+		}
+	}
+}
+
+func TestMaxColor(t *testing.T) {
+	rng := rand.New(rand.NewSource(0))
+	result := maxColor()
+	if result != 0 {
+		t.Fatalf("Expect max color to be 0, got %v", result)
+	}
+
+	result = maxColor(1)
+	if result != 1 {
+		t.Fatalf("Expect max color to be 1, got %v", result)
+	}
+
+	result = maxColor(52428, 65535)
+	if result != 255 {
+		t.Fatalf("Expect max color to be 255, got %v", result)
+	}
+
+	for i := 0; i < 10; i++ {
+		result = maxColor(rng.Uint32(), rng.Uint32(), rng.Uint32())
+		if result > 255 {
+			t.Fatalf("Number out of range: %v", result)
+		}
 	}
 }
