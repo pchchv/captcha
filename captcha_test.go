@@ -141,8 +141,6 @@ func TestMaxColor(t *testing.T) {
 	}
 }
 
-// Need Fix!
-// freetype: DrawText called with a nil font
 func TestNewCaptcha(t *testing.T) {
 	data, err := New(150, 50)
 	if err != nil {
@@ -156,8 +154,6 @@ func TestNewCaptcha(t *testing.T) {
 	}
 }
 
-// Need Fix!
-// freetype: DrawText called with a nil font
 func TestSmallCaptcha(t *testing.T) {
 	_, err := New(36, 12)
 	if err != nil {
@@ -189,8 +185,6 @@ func TestEncodeGIF(t *testing.T) {
 	}
 }
 
-// Need Fix!
-// freetype: DrawText called with a nil font
 func TestNewMathExpr(t *testing.T) {
 	_, err := NewMathExpr(150, 50)
 	if err != nil {
@@ -198,8 +192,6 @@ func TestNewMathExpr(t *testing.T) {
 	}
 }
 
-// Need Fix!
-// freetype: DrawText called with a nil font
 func TestNewCustomGenerator(t *testing.T) {
 	_, err := NewCustomGenerator(150, 50, func() (anwser string, question string) {
 		return "1", "2"
