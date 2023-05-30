@@ -18,6 +18,7 @@ func (c hsva) RGBA() (r, g, b, a uint32) {
 		t                = c.v * (1 - (1-f)*c.s)
 		red, green, blue float64
 	)
+
 	switch int(i) % 6 {
 	case 0:
 		red, green, blue = c.v, t, p

@@ -183,7 +183,7 @@ func randomText(opts *Options) (text string) {
 		text += string([]rune(opts.CharPreset)[rand.Intn(n)])
 	}
 
-	return
+	return text
 }
 
 func randomColor() color.RGBA {
@@ -209,7 +209,7 @@ func randomEquation() (text string, equation string) {
 	text = strconv.Itoa(left + right)
 	equation = strconv.Itoa(left) + "+" + strconv.Itoa(right)
 
-	return
+	return text, equation
 }
 
 func randomInvertColor(base color.Color) color.Color {
@@ -234,7 +234,7 @@ func maxColor(numList ...uint32) (max uint32) {
 		}
 	}
 
-	return
+	return max
 }
 
 func minColor(numList ...uint32) (min uint32) {
@@ -246,7 +246,7 @@ func minColor(numList ...uint32) (min uint32) {
 		}
 	}
 
-	return
+	return min
 }
 
 func getLightness(colour color.Color) float64 {
