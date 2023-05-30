@@ -2,6 +2,7 @@
 package captcha
 
 import (
+	_ "embed"
 	"image"
 	"image/color"
 	"image/draw"
@@ -22,6 +23,7 @@ import (
 const charPreset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
 var (
+	//go:embed fonts/Comismsh.ttf
 	ttf     []byte
 	ttfFont *truetype.Font
 )
