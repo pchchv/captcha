@@ -7,6 +7,24 @@
 
 This package uses embed package from Go 1.16.
 
+## Usage
+
+```Go
+import "github.com/pchchv/captcha"
+
+func handle(w http.ResponseWriter, r *http.Request) {
+	// create a captcha of 150x50px
+	data, _ := captcha.New(150, 50)
+
+	// session come from other library such as gorilla/sessions
+	session.Values["captcha"] = data.Text
+	session.Save(r, w)
+	// send image data to client
+	data.WriteImage(w)
+}
+
+```
+
 ## Sample image
 ![image](examples/captcha.png)
 
